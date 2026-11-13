@@ -56,21 +56,21 @@ export default function VoteModal({
         exit={{ opacity: 0 }}
       >
         {/* Backdrop */}
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
 
         {/* Sheet */}
         <motion.div
-          className="relative w-full max-w-md bg-white dark:bg-surface-card-dark rounded-t-3xl sm:rounded-3xl p-6 pb-8 shadow-2xl"
+          className="relative w-full max-w-md card rounded-t-3xl sm:rounded-3xl p-6 pb-8 shadow-2xl"
           initial={{ y: '100%' }}
           animate={{ y: 0 }}
           exit={{ y: '100%' }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
         >
           <div className="flex items-center justify-between mb-5">
-            <h3 className="text-lg font-bold">Spend Request</h3>
+            <h3 className="text-lg font-bold text-gray-100">Spend Request</h3>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="p-1.5 rounded-lg hover:bg-white/[0.06] text-gray-400 transition-colors"
             >
               <X size={20} />
             </button>
@@ -81,12 +81,12 @@ export default function VoteModal({
             <div className="flex items-start gap-3">
               <span className="text-2xl">{getCategoryEmoji(request.category)}</span>
               <div className="flex-1">
-                <p className="font-semibold">{request.description}</p>
+                <p className="font-semibold text-gray-100">{request.description}</p>
                 <p className="text-sm text-gray-500 mt-1">
                   by {request.requested_by} &middot; {formatRelativeTime(request.created_at)}
                 </p>
               </div>
-              <p className="font-mono font-bold text-xl text-coral-500">
+              <p className="font-mono font-bold text-xl text-rose-400">
                 {formatCurrency(request.amount)}
               </p>
             </div>
@@ -98,9 +98,9 @@ export default function VoteModal({
               Votes ({approveCount + rejectCount} / {request.votes_needed} needed)
             </p>
             <div className="flex gap-4">
-              <div className="flex-1 card p-3 text-center border-mint-500/30">
-                <ThumbsUp size={20} className="text-mint-500 mx-auto mb-1" />
-                <p className="text-lg font-bold text-mint-500">{approveCount}</p>
+              <div className="flex-1 card p-3 text-center border-emerald-500/20">
+                <ThumbsUp size={20} className="text-emerald-400 mx-auto mb-1" />
+                <p className="text-lg font-bold text-emerald-400">{approveCount}</p>
                 <div className="flex justify-center -space-x-1 mt-1.5">
                   {request.votes
                     ?.filter((v) => v.decision === 'approve')
@@ -117,9 +117,9 @@ export default function VoteModal({
                     })}
                 </div>
               </div>
-              <div className="flex-1 card p-3 text-center border-coral-500/30">
-                <ThumbsDown size={20} className="text-coral-500 mx-auto mb-1" />
-                <p className="text-lg font-bold text-coral-500">{rejectCount}</p>
+              <div className="flex-1 card p-3 text-center border-rose-500/20">
+                <ThumbsDown size={20} className="text-rose-400 mx-auto mb-1" />
+                <p className="text-lg font-bold text-rose-400">{rejectCount}</p>
                 <div className="flex justify-center -space-x-1 mt-1.5">
                   {request.votes
                     ?.filter((v) => v.decision === 'reject')
@@ -145,7 +145,7 @@ export default function VoteModal({
               <button
                 onClick={() => handleVote('reject')}
                 disabled={voting}
-                className="flex-1 btn-secondary flex items-center justify-center gap-2 text-coral-500"
+                className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold bg-rose-500 hover:bg-rose-600 text-white transition-all disabled:opacity-50"
               >
                 <ThumbsDown size={18} />
                 Reject
@@ -153,14 +153,14 @@ export default function VoteModal({
               <button
                 onClick={() => handleVote('approve')}
                 disabled={voting}
-                className="flex-1 btn-primary flex items-center justify-center gap-2 bg-mint-500 hover:bg-mint-600"
+                className="flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold bg-emerald-500 hover:bg-emerald-600 text-white transition-all disabled:opacity-50"
               >
                 <ThumbsUp size={18} />
                 Approve
               </button>
             </div>
           ) : (
-            <div className="text-center py-3 rounded-xl bg-gray-50 dark:bg-gray-800 text-sm text-gray-500">
+            <div className="text-center py-3 rounded-xl bg-white/[0.04] text-sm text-gray-500">
               You already voted on this request
             </div>
           )}

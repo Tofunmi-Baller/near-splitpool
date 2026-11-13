@@ -2,6 +2,8 @@ import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { WalletProvider } from './context/WalletContext';
 import Layout from './components/Layout';
+import LandingPage from './pages/LandingPage';
+import DemoPage from './pages/DemoPage';
 import Home from './pages/Home';
 import PoolView from './pages/PoolView';
 import CreatePool from './pages/CreatePool';
@@ -15,8 +17,10 @@ export default function App() {
     <ThemeProvider>
       <WalletProvider>
         <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/demo" element={<DemoPage />} />
           <Route element={<Layout />}>
-            <Route path="/" element={<Home />} />
+            <Route path="/dashboard" element={<Home />} />
             <Route path="/pool/:id" element={<PoolView />} />
             <Route path="/pool/:id/spend" element={<SpendRequest />} />
             <Route path="/pool/:id/rules" element={<RulesEditor />} />

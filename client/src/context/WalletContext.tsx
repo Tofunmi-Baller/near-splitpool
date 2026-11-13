@@ -1,17 +1,28 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+
+const DEMO_ACCOUNTS: Record<string, string> = {
+  'alice.testnet': 'Alice',
+  'bob.testnet': 'Bob',
+  'carol.testnet': 'Carol',
+  'dave.testnet': 'Dave',
+};
 
 interface WalletContextValue {
   account: string | null;
+  displayName: string;
   isConnected: boolean;
   connect: (accountName?: string) => void;
   disconnect: () => void;
+  demoAccounts: typeof DEMO_ACCOUNTS;
 }
 
 const WalletContext = createContext<WalletContextValue>({
   account: null,
+  displayName: '',
   isConnected: false,
   connect: () => {},
   disconnect: () => {},
+  demoAccounts: DEMO_ACCOUNTS,
 });
 
 export function WalletProvider({ children }: { children: ReactNode }) {
@@ -21,6 +32,17 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     }
     return null;
   });
+
+  // Auto-connect as alice.testnet if not connected
+  useEffect(() => {
+    if (!account) {
+      const defaultAccount = 'alice.testnet';
+      setAccount(defaultAccount);
+      localStorage.setItem('splitpool-wallet', defaultAccount);
+    }
+  }, []);
+
+  const displayName = account ? (DEMO_ACCOUNTS[account] || account.split('.')[0]) : '';
 
   const connect = (accountName?: string) => {
     const name = accountName || 'alice.testnet';
@@ -35,7 +57,14 @@ export function WalletProvider({ children }: { children: ReactNode }) {
 
   return (
     <WalletContext.Provider
-      value={{ account, isConnected: !!account, connect, disconnect }}
+      value={{
+        account,
+        displayName,
+        isConnected: !!account,
+        connect,
+        disconnect,
+        demoAccounts: DEMO_ACCOUNTS,
+      }}
     >
       {children}
     </WalletContext.Provider>

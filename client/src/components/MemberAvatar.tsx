@@ -24,14 +24,14 @@ export default function MemberAvatar({
   return (
     <div className={`relative inline-flex ${className}`}>
       <div
-        className={`${SIZES[size]} rounded-full flex items-center justify-center font-bold text-white shrink-0 ring-2 ring-white dark:ring-surface-card-dark`}
+        className={`${SIZES[size]} rounded-full flex items-center justify-center font-bold text-white shrink-0 ring-2 ring-surface-950`}
         style={{ backgroundColor: color || '#3B5BFF' }}
         title={name}
       >
         {getInitials(name)}
       </div>
       {showOnline && (
-        <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-mint-500 rounded-full ring-2 ring-white dark:ring-surface-card-dark" />
+        <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 rounded-full ring-2 ring-surface-950" />
       )}
     </div>
   );

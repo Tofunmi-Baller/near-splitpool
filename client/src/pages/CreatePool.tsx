@@ -5,11 +5,6 @@ import { X, UserPlus, Shield, Vote } from 'lucide-react';
 import { useWallet } from '../context/WalletContext';
 import { createPool, addMember } from '../api/client';
 
-const AVATAR_COLORS = [
-  '#3B5BFF', '#F43F5E', '#10B981', '#F59E0B', '#8B5CF6',
-  '#EC4899', '#06B6D4', '#EF4444', '#14B8A6', '#6366F1',
-];
-
 export default function CreatePool() {
   const navigate = useNavigate();
   const { account } = useWallet();
@@ -46,7 +41,6 @@ export default function CreatePool() {
         creator: account!,
       });
 
-      // Add invited members
       for (let i = 0; i < members.length; i++) {
         const nearAccount = members[i];
         const rawName = nearAccount.split('.')[0];
@@ -64,13 +58,14 @@ export default function CreatePool() {
   };
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">Create a Pool</h1>
+    <div className="max-w-2xl mx-auto">
+      <h1 className="text-3xl font-bold text-gray-100 mb-2">Create a Pool</h1>
+      <p className="text-gray-500 mb-8">Set up a shared fund with programmable rules</p>
 
-      <div className="space-y-5">
+      <div className="space-y-6">
         {/* Pool name */}
         <div>
-          <label className="block text-sm font-medium mb-1.5">Pool Name *</label>
+          <label className="block text-sm font-medium text-gray-300 mb-1.5">Pool Name *</label>
           <input
             type="text"
             placeholder="Apartment expenses, Trip fund..."
@@ -83,7 +78,7 @@ export default function CreatePool() {
 
         {/* Description */}
         <div>
-          <label className="block text-sm font-medium mb-1.5">Description</label>
+          <label className="block text-sm font-medium text-gray-300 mb-1.5">Description</label>
           <textarea
             placeholder="What's this pool for?"
             value={description}
@@ -96,18 +91,18 @@ export default function CreatePool() {
 
         {/* Currency */}
         <div>
-          <label className="block text-sm font-medium mb-1.5">Currency</label>
+          <label className="block text-sm font-medium text-gray-300 mb-1.5">Currency</label>
           <input
             type="text"
             value="USDC"
             disabled
-            className="input-field bg-gray-50 dark:bg-gray-900 text-gray-400 cursor-not-allowed"
+            className="input-field bg-white/[0.02] text-gray-500 cursor-not-allowed"
           />
         </div>
 
         {/* Invite members */}
         <div>
-          <label className="block text-sm font-medium mb-1.5">
+          <label className="block text-sm font-medium text-gray-300 mb-1.5">
             <UserPlus size={14} className="inline mr-1.5" />
             Invite Members
           </label>
@@ -135,12 +130,12 @@ export default function CreatePool() {
                   key={m}
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 text-sm"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 text-sm"
                 >
                   {m}
                   <button
                     onClick={() => removeMember(m)}
-                    className="hover:text-coral-500 transition-colors"
+                    className="hover:text-rose-400 transition-colors"
                   >
                     <X size={14} />
                   </button>
@@ -151,27 +146,25 @@ export default function CreatePool() {
         </div>
 
         {/* Default rules preview */}
-        <div className="card p-4">
-          <h3 className="text-sm font-semibold mb-3 text-gray-500 uppercase tracking-wide">
-            Default Rules
-          </h3>
-          <div className="space-y-2.5">
-            <div className="flex items-center gap-3 text-sm">
-              <Shield size={16} className="text-brand-500 shrink-0" />
-              <span>Personal spend limit: <strong>$50</strong></span>
+        <div className="card p-5">
+          <h3 className="section-title mb-4">Default Rules</h3>
+          <div className="space-y-3">
+            <div className="flex items-center gap-3 text-sm text-gray-300">
+              <Shield size={16} className="text-brand-400 shrink-0" />
+              <span>Personal spend limit: <strong className="text-gray-100">$50</strong></span>
             </div>
-            <div className="flex items-center gap-3 text-sm">
-              <Vote size={16} className="text-brand-500 shrink-0" />
-              <span>Votes needed for big spends: <strong>2</strong></span>
+            <div className="flex items-center gap-3 text-sm text-gray-300">
+              <Vote size={16} className="text-brand-400 shrink-0" />
+              <span>Votes needed for big spends: <strong className="text-gray-100">2</strong></span>
             </div>
           </div>
-          <p className="text-xs text-gray-400 mt-3">
+          <p className="text-xs text-gray-600 mt-4">
             You can customize rules after creating the pool
           </p>
         </div>
 
         {error && (
-          <p className="text-sm text-coral-500 bg-coral-500/10 rounded-xl px-4 py-2">
+          <p className="text-sm text-rose-400 bg-rose-500/10 border border-rose-500/20 rounded-xl px-4 py-2">
             {error}
           </p>
         )}

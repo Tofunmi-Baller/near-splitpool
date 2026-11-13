@@ -16,12 +16,15 @@ export default function ContributionBar({ member, total }: ContributionBarProps)
       <MemberAvatar name={member.display_name} color={member.avatar_color} size="sm" />
       <div className="flex-1 min-w-0">
         <div className="flex items-center justify-between mb-1">
-          <span className="text-sm font-medium truncate">{member.display_name}</span>
-          <span className="text-sm font-mono font-bold text-gray-600 dark:text-gray-400">
-            {formatCurrency(member.contribution)}
-          </span>
+          <span className="text-sm font-medium text-gray-300 truncate">{member.display_name}</span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-gray-500">{pct.toFixed(0)}%</span>
+            <span className="text-sm font-mono font-bold text-gray-400">
+              {formatCurrency(member.contribution)}
+            </span>
+          </div>
         </div>
-        <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+        <div className="h-2 bg-white/[0.06] rounded-full overflow-hidden">
           <motion.div
             className="h-full rounded-full"
             style={{ backgroundColor: member.avatar_color || '#3B5BFF' }}

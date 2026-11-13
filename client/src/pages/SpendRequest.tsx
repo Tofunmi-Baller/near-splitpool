@@ -10,7 +10,7 @@ import { formatCurrency } from '../lib/utils';
 const CATEGORIES = [
   { value: 'groceries', label: 'Groceries', emoji: '\u{1F6D2}' },
   { value: 'rent', label: 'Rent', emoji: '\u{1F3E0}' },
-  { value: 'utilities', label: 'Utilities', emoji: '⚡' },
+  { value: 'utilities', label: 'Utilities', emoji: '\u{26A1}' },
   { value: 'transport', label: 'Transport', emoji: '\u{1F697}' },
   { value: 'food', label: 'Food', emoji: '\u{1F355}' },
   { value: 'entertainment', label: 'Entertainment', emoji: '\u{1F3AC}' },
@@ -65,7 +65,7 @@ export default function SpendRequestPage() {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="text-center py-12"
+        className="text-center py-12 max-w-lg mx-auto"
       >
         {result.type === 'auto-approved' ? (
           <>
@@ -74,34 +74,33 @@ export default function SpendRequestPage() {
               animate={{ scale: 1 }}
               transition={{ type: 'spring', delay: 0.1 }}
             >
-              <CheckCircle2 size={64} className="text-mint-500 mx-auto mb-4" />
+              <CheckCircle2 size={64} className="text-emerald-400 mx-auto mb-4" />
             </motion.div>
-            <h2 className="text-2xl font-bold mb-2">Auto-approved!</h2>
+            <h2 className="text-2xl font-bold text-gray-100 mb-2">Auto-approved!</h2>
             <p className="text-gray-500 mb-1">
               {getCategoryEmoji(category)} {description}
             </p>
-            <p className="text-xl font-mono font-bold text-mint-500">
+            <p className="text-xl font-mono font-bold text-emerald-400">
               {formatCurrency(amountNum)}
             </p>
           </>
         ) : (
           <>
-            <motion.span
+            <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring', delay: 0.1 }}
-              className="text-6xl block mb-4"
             >
-              {'\u{1F5F3}\u{FE0F}'}
-            </motion.span>
-            <h2 className="text-2xl font-bold mb-2">Submitted for voting</h2>
+              <Vote size={64} className="text-brand-400 mx-auto mb-4" />
+            </motion.div>
+            <h2 className="text-2xl font-bold text-gray-100 mb-2">Submitted for voting</h2>
             <p className="text-gray-500 mb-1">
               {getCategoryEmoji(category)} {description}
             </p>
-            <p className="text-xl font-mono font-bold text-brand-500">
+            <p className="text-xl font-mono font-bold text-brand-400">
               {formatCurrency(amountNum)}
             </p>
-            <p className="text-sm text-gray-400 mt-2">
+            <p className="text-sm text-gray-500 mt-2">
               Waiting for member approvals
             </p>
           </>
@@ -118,29 +117,30 @@ export default function SpendRequestPage() {
   }
 
   return (
-    <div>
+    <div className="max-w-2xl mx-auto">
       <button
         onClick={() => navigate(-1)}
-        className="flex items-center gap-1 text-sm text-gray-500 mb-4 hover:text-gray-700 dark:hover:text-gray-300"
+        className="flex items-center gap-1 text-sm text-gray-500 mb-4 hover:text-gray-300 transition-colors"
       >
         <ArrowLeft size={16} />
         Back
       </button>
 
-      <h1 className="text-2xl font-bold mb-6">Request a Spend</h1>
+      <h1 className="text-3xl font-bold text-gray-100 mb-2">Request a Spend</h1>
+      <p className="text-gray-500 mb-8">Submit an expense for the pool</p>
 
-      <div className="space-y-5">
+      <div className="space-y-6">
         {/* Amount */}
-        <div className="card p-6 text-center">
-          <label className="text-sm text-gray-500 mb-2 block">Amount</label>
+        <div className="card p-8 text-center">
+          <label className="text-sm text-gray-500 mb-3 block">Amount</label>
           <div className="flex items-center justify-center">
-            <span className="text-3xl font-mono text-gray-300 mr-1">$</span>
+            <span className="text-3xl font-mono text-gray-600 mr-1">$</span>
             <input
               type="number"
               placeholder="0.00"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="text-4xl font-mono font-bold text-center bg-transparent outline-none w-48 placeholder-gray-200 dark:placeholder-gray-700"
+              className="text-4xl font-mono font-bold text-center bg-transparent outline-none w-48 placeholder-gray-700 text-gray-100"
               min="0"
               step="0.01"
             />
@@ -157,21 +157,21 @@ export default function SpendRequestPage() {
               className="overflow-hidden"
             >
               <div
-                className={`rounded-xl px-4 py-3 text-sm font-medium ${
+                className={`rounded-xl px-4 py-3 text-sm font-medium border ${
                   isUnderLimit
-                    ? 'bg-mint-500/10 text-mint-600 dark:text-mint-400'
-                    : 'bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400'
+                    ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
+                    : 'bg-brand-500/10 border-brand-500/20 text-brand-400'
                 }`}
               >
                 {isUnderLimit ? (
                   <span className="flex items-center gap-2">
                     <CheckCircle2 size={16} />
-                    Under $50? Auto-approved
+                    Under $50 -- Auto-approved
                   </span>
                 ) : (
                   <span className="flex items-center gap-2">
                     <Vote size={16} />
-                    Over $50? Needs 2 votes
+                    Over $50 -- Needs 2 votes
                   </span>
                 )}
               </div>
@@ -181,7 +181,7 @@ export default function SpendRequestPage() {
 
         {/* Description */}
         <div>
-          <label className="block text-sm font-medium mb-1.5">What's it for?</label>
+          <label className="block text-sm font-medium text-gray-300 mb-1.5">What's it for?</label>
           <input
             type="text"
             placeholder="Weekly groceries, Uber ride..."
@@ -194,27 +194,27 @@ export default function SpendRequestPage() {
 
         {/* Category */}
         <div>
-          <label className="block text-sm font-medium mb-2">Category</label>
+          <label className="block text-sm font-medium text-gray-300 mb-3">Category</label>
           <div className="grid grid-cols-4 gap-2">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat.value}
                 onClick={() => setCategory(cat.value)}
-                className={`p-3 rounded-xl text-center transition-all ${
+                className={`p-3 rounded-xl text-center transition-all border ${
                   category === cat.value
-                    ? 'bg-brand-50 dark:bg-brand-900/30 ring-2 ring-brand-500 shadow-sm'
-                    : 'bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    ? 'bg-brand-500/10 border-brand-500/30 ring-1 ring-brand-500/40 shadow-sm'
+                    : 'bg-white/[0.03] border-white/[0.06] hover:bg-white/[0.06]'
                 }`}
               >
                 <span className="text-xl block">{cat.emoji}</span>
-                <span className="text-[10px] font-medium mt-1 block">{cat.label}</span>
+                <span className="text-[10px] font-medium mt-1 block text-gray-400">{cat.label}</span>
               </button>
             ))}
           </div>
         </div>
 
         {error && (
-          <p className="text-sm text-coral-500 bg-coral-500/10 rounded-xl px-4 py-2">
+          <p className="text-sm text-rose-400 bg-rose-500/10 border border-rose-500/20 rounded-xl px-4 py-2">
             {error}
           </p>
         )}
